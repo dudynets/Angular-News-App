@@ -1,0 +1,77 @@
+.article-content {
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    &-thumbnail {
+      max-height: 500px;
+      width: auto;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      column-gap: 3rem;
+      row-gap: 1.5rem;
+      flex: 1;
+
+      &-item {
+        width: fit-content;
+        display: flex;
+        flex-direction: column;
+
+        &-label {
+          ion-text {
+            width: fit-content;
+
+            h3 {
+              display: flex;
+              gap: 0.5rem;
+              align-items: center;
+              margin-top: 0;
+            }
+          }
+        }
+
+        &-value {
+          ion-chip {
+            margin: 0;
+          }
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+
+      &-thumbnail {
+        width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+
+  &__body {
+    margin-top: 1.5rem;
+  }
+
+  &__comments {
+    margin-top: 1.5rem;
+
+    &-add-comment {
+      ion-item {
+        &::part(native) {
+          padding: 0;
+        }
+
+        form {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

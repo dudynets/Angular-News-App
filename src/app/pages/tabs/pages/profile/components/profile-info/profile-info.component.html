@@ -1,0 +1,145 @@
+<div class="profile-info">
+  <div class="profile-info__details ion-margin-top ion-margin-bottom">
+    <div class="profile-info__details-avatar">
+      <ion-avatar *ngIf="user.photoURL">
+        <img [alt]="user.displayName" [src]="user.photoURL" />
+      </ion-avatar>
+    </div>
+    <div class="profile-info__details-content">
+      <ion-text class="profile-info__details-content-name">
+        <h3>{{ user.displayName }}</h3>
+      </ion-text>
+      <p class="profile-info__details-content-email">
+        <ion-text color="medium">
+          {{ user.email }}
+        </ion-text>
+      </p>
+    </div>
+  </div>
+
+  <ng-container *ngIf="user.role === UserRole.WRITER">
+    <div class="profile-info__new-article ion-margin-bottom">
+      <ion-text class="profile-info__new-article-title">
+        <h3>
+          <ion-icon name="create"></ion-icon>
+          New Article
+        </h3>
+        <p>Write a new article and share it with the world.</p>
+      </ion-text>
+
+      <div class="profile-info__new-article-content ion-margin-top">
+        <ion-button routerLink="/editor">
+          <ion-icon slot="start" name="add-circle"></ion-icon>
+          Start Writing
+        </ion-button>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="profile-info__activity ion-margin-bottom">
+    <ion-text class="profile-info__activity-title">
+      <h3>
+        <ion-icon name="people"></ion-icon>
+        My Activity
+      </h3>
+      <p>A summary of your recent actions in the app.</p>
+    </ion-text>
+
+    <div class="profile-info__activity-content ion-margin-top">
+      <ion-accordion-group [multiple]="true">
+        <ng-container *ngIf="user.role === UserRole.WRITER">
+          <ion-accordion value="articles">
+            <ion-item slot="header" color="light">
+              <ion-icon slot="start" name="newspaper"></ion-icon>
+              <ion-label>Articles</ion-label>
+              <ion-badge
+                slot="end"
+                class="profile-info__activity-content__badge"
+                >{{ userArticles.length }}</ion-badge
+              >
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <app-articles-grid
+                [articles]="userArticles"
+                [showActions]="true"
+              ></app-articles-grid>
+            </div>
+          </ion-accordion>
+        </ng-container>
+
+        <ion-accordion value="likes">
+          <ion-item slot="header" color="light">
+            <ion-icon slot="start" name="heart"></ion-icon>
+            <ion-label>Likes</ion-label>
+            <ion-badge
+              slot="end"
+              class="profile-info__activity-content__badge"
+              >{{ userLikes.length }}</ion-badge
+            >
+          </ion-item>
+          <div class="ion-padding" slot="content">
+            <app-articles-grid
+              [articles]="likedArticles"
+              [showActions]="false"
+            ></app-articles-grid>
+          </div>
+        </ion-accordion>
+
+        <ion-accordion value="comments">
+          <ion-item slot="header" color="light">
+            <ion-icon slot="start" name="chatbox"></ion-icon>
+            <ion-label>Comments</ion-label>
+            <ion-badge
+              slot="end"
+              class="profile-info__activity-content__badge"
+              >{{ userComments.length }}</ion-badge
+            >
+          </ion-item>
+          <div class="ion-padding-start ion-padding-end" slot="content">
+            <ng-container *ngFor="let comment of userComments">
+              <app-comment
+                [comment]="comment"
+                [showArticleLink]="true"
+                (deleteComment)="deleteComment(comment)"
+              ></app-comment>
+            </ng-container>
+
+            <ng-container *ngIf="userComments.length === 0">
+              <div class="ion-padding-top">
+                <p class="ion-margin-top">
+                  You haven't commented on any articles yet.
+                </p>
+              </div>
+            </ng-container>
+          </div>
+        </ion-accordion>
+      </ion-accordion-group>
+    </div>
+  </div>
+
+  <div class="profile-info__danger-zone">
+    <ion-text class="profile-info__danger-zone-title">
+      <ion-text color="danger">
+        <h3>
+          <ion-icon name="warning"></ion-icon>
+          Danger Zone
+        </h3>
+      </ion-text>
+      <p>
+        Actions that are irreversible and will permanently affect your account.
+      </p>
+    </ion-text>
+
+    <div class="profile-info__danger-zone-actions">
+      <ion-button (click)="signOut()">
+        <ion-icon slot="start" name="log-out"></ion-icon>
+        Sign Out
+      </ion-button>
+
+      <ion-button color="danger" (click)="deleteAccount()">
+        <ion-icon slot="start" name="trash"></ion-icon>
+        Delete My Account
+      </ion-button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,128 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="profile"
+        text="My Profile"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{ isEditMode ? 'Edit Article' : 'New Article' }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        (click)="publish()"
+        [disabled]="!formValid || (isEditMode && !editValid)"
+      >
+        <ion-icon slot="start" name="checkmark"></ion-icon>
+        {{ isEditMode ? 'Edit' : 'Publish' }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{
+        isEditMode ? 'Edit Article' : 'New Article'
+      }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="editor-content">
+    <form [formGroup]="editorForm">
+      <div class="editor-content__section-title ion-padding-top">
+        <ion-text>
+          <h3>
+            <ion-icon name="information-circle"></ion-icon>
+            General
+          </h3>
+          <p>General information about your article.</p>
+        </ion-text>
+      </div>
+
+      <div class="editor-content__item editor-content__item--title">
+        <ion-item>
+          <ion-input
+            formControlName="title"
+            label="Title"
+            placeholder="Enter text"
+          ></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="editor-content__item editor-content__item--category">
+        <ion-item>
+          <ion-select
+            formControlName="category"
+            label="Category"
+            placeholder="Choose category..."
+          >
+            <ng-container *ngFor="let category of categories">
+              <ion-select-option [value]="category.title">
+                {{ category.title }}
+              </ion-select-option>
+            </ng-container>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="editor-content__item editor-content__item--thumbnail">
+        <ion-item
+          [button]="true"
+          (click)="
+            !thumbnailImage ? selectThumbnailImage() : removeThumbnailImage()
+          "
+        >
+          <ion-label>Thumbnail</ion-label>
+
+          <ng-container *ngIf="thumbnailImage">
+            <ion-button fill="clear" slot="end">
+              <ion-icon slot="start" name="close"></ion-icon>
+              Remove
+            </ion-button>
+
+            <ion-thumbnail slot="end">
+              <img alt="Thumbnail image" [src]="thumbnailImageUrl" />
+            </ion-thumbnail>
+          </ng-container>
+
+          <ng-container *ngIf="!thumbnailImage">
+            <ion-button fill="clear" slot="end">
+              <ion-icon slot="start" name="camera"></ion-icon>
+              Select Image
+            </ion-button>
+          </ng-container>
+        </ion-item>
+      </div>
+
+      <div
+        class="editor-content__section-title ion-padding-top ion-padding-bottom"
+      >
+        <ion-text>
+          <h3>
+            <ion-icon name="create"></ion-icon>
+            Content
+          </h3>
+          <p>
+            Write your article here. You can use the toolbar to format your
+            text.
+          </p>
+        </ion-text>
+      </div>
+
+      <div
+        class="editor-content__item editor-content__item--content ion-margin-bottom"
+      >
+        <ion-item>
+          <quill-editor
+            [styles]="{'height': '70vh', 'font-size': '1rem'}"
+            [modules]="quillModules"
+            formControlName="content"
+          ></quill-editor>
+        </ion-item>
+      </div>
+    </form>
+  </div>
+</ion-content>

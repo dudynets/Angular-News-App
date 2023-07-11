@@ -1,0 +1,172 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="feed" text="Back"></ion-back-button>
+    </ion-buttons>
+    <ion-title> {{article?.title || 'Article'}} </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content> </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ng-container *ngIf="loaded">
+        <ion-title size="large"> {{article?.title}} </ion-title>
+      </ng-container>
+    </ion-toolbar>
+  </ion-header>
+
+  <ng-container *ngIf="loaded; else loading">
+    <div class="article-content ion-padding">
+      <div class="article-content__details">
+        <img
+          class="article-content__details-thumbnail"
+          [alt]="article?.title"
+          [src]="article?.thumbnailURL"
+        />
+
+        <div class="article-content__details-content">
+          <div class="article-content__details-content-item">
+            <div class="article-content__details-content-item-label">
+              <ion-text>
+                <h3>Author</h3>
+              </ion-text>
+            </div>
+            <div class="article-content__details-content-item-value">
+              <ion-chip>
+                <ion-avatar *ngIf="writer?.photoURL">
+                  <img [alt]="writer?.displayName" [src]="writer?.photoURL" />
+                </ion-avatar>
+                <ion-label>{{writer?.displayName}}</ion-label>
+              </ion-chip>
+            </div>
+          </div>
+
+          <div class="article-content__details-content-item">
+            <div class="article-content__details-content-item-label">
+              <ion-text>
+                <h3>Created at</h3>
+              </ion-text>
+            </div>
+            <div class="article-content__details-content-item-value">
+              <ion-chip>
+                <ion-icon name="time" color="primary"></ion-icon>
+                <ion-label>
+                  {{article?.createdAt | date: 'dd/MM/yyyy hh:mm'}}
+                </ion-label>
+              </ion-chip>
+            </div>
+          </div>
+
+          <ng-container *ngIf="article?.updatedAt">
+            <div class="article-content__details-content-item">
+              <div class="article-content__details-content-item-label">
+                <ion-text>
+                  <h3>Updated at</h3>
+                </ion-text>
+              </div>
+              <div class="article-content__details-content-item-value">
+                <ion-chip>
+                  <ion-icon name="time" color="primary"></ion-icon>
+                  <ion-label>
+                    {{article?.updatedAt | date: 'dd/MM/yyyy hh:mm'}}
+                  </ion-label>
+                </ion-chip>
+              </div>
+            </div>
+          </ng-container>
+
+          <div class="article-content__details-content-item">
+            <div class="article-content__details-content-item-label">
+              <ion-text>
+                <h3>Likes</h3>
+              </ion-text>
+            </div>
+            <div class="article-content__details-content-item-value">
+              <ng-container
+                *ngIf="user$ | async as user; else likesNoUserTemplate"
+              >
+                <ng-container *ngIf="!isLikedByUser(user)">
+                  <ion-chip (click)="like()">
+                    <ion-icon name="heart-outline" color="primary"></ion-icon>
+                    <ion-label> {{likesCount}} </ion-label>
+                  </ion-chip>
+                </ng-container>
+
+                <ng-container *ngIf="isLikedByUser(user)">
+                  <ion-chip (click)="unlike()" [outline]="false">
+                    <ion-icon name="heart" color="primary"></ion-icon>
+                    <ion-label> {{likesCount}} </ion-label>
+                  </ion-chip>
+                </ng-container>
+              </ng-container>
+
+              <ng-template #likesNoUserTemplate>
+                <ion-chip [disabled]="true">
+                  <ion-icon name="heart-outline" color="primary"></ion-icon>
+                  <ion-label> {{likesCount}} </ion-label>
+                </ion-chip>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-content__body">
+        <quill-view [content]="articleContent"> </quill-view>
+      </div>
+
+      <div class="article-content__comments">
+        <div class="article-content__comments-title">
+          <ion-text>
+            <h2>Comments ({{comments.length}})</h2>
+          </ion-text>
+        </div>
+
+        <div class="article-content__comments-add-comment">
+          <ng-container *ngIf="user$ | async as user">
+            <ion-item [disabled]="!user">
+              <ion-avatar *ngIf="user?.photoURL" slot="start">
+                <img [alt]="user?.displayName" [src]="user?.photoURL" />
+              </ion-avatar>
+
+              <form [formGroup]="commentForm">
+                <ion-textarea
+                  formControlName="comment"
+                  placeholder="Add a comment..."
+                ></ion-textarea>
+              </form>
+
+              <ion-button
+                [disabled]="!validComment"
+                slot="end"
+                (click)="submitComment(user)"
+              >
+                <ion-icon name="send"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ng-container>
+        </div>
+
+        <div class="article-content__comments-list">
+          <ng-container *ngFor="let comment of comments">
+            <app-comment
+              [comment]="comment"
+              (deleteComment)="deleteComment(comment)"
+            ></app-comment>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ion-content>
+
+<ng-template #loading>
+  <div class="loader-container">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+</ng-template>

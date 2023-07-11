@@ -1,0 +1,102 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic pages to work properly */
+@import '@ionic/angular/css/core.css';
+
+/* Basic CSS for apps built with Ionic */
+@import '@ionic/angular/css/normalize.css';
+@import '@ionic/angular/css/structure.css';
+@import '@ionic/angular/css/typography.css';
+@import '@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import '@ionic/angular/css/padding.css';
+@import '@ionic/angular/css/float-elements.css';
+@import '@ionic/angular/css/text-alignment.css';
+@import '@ionic/angular/css/text-transformation.css';
+@import '@ionic/angular/css/flex-utils.css';
+
+/* Quill */
+@import 'quill/dist/quill.snow.css';
+
+.profile-info__activity-content__badge {
+  margin-right: 8px;
+}
+
+.ql-toolbar,
+.ql-container {
+  border-color: var(
+    --ion-item-border-color,
+    var(--ion-border-color, var(--ion-color-step-250, #c8c7cc))
+  ) !important;
+}
+
+.ql-toolbar button:hover,
+.ql-toolbar button:focus,
+.ql-toolbar button:active {
+  color: var(--ion-color-primary) !important;
+}
+
+.article-content__body quill-view .ql-editor,
+quill-editor .ql-editor {
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  p {
+    font-size: 1rem !important;
+  }
+
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  a {
+    font-size: 1rem !important;
+    color: var(--ion-color-primary) !important;
+  }
+}
+
+quill-editor .ql-editor {
+  padding: 1rem !important;
+}
+
+html,
+body {
+  user-select: none;
+}
+
+img {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+.loader-container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

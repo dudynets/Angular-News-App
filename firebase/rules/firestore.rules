@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow anyone to read user profile
+    match /users/{userId} {
+      allow read: if true;
+    }
+
+    // Allow only authenticated users to write to user documents and related collections
+    match /users/{userId} {
+      allow write: if request.auth != null && request.auth.uid == userId
+                    && (!('role' in request.resource.data));
+      allow delete: if request.auth != null && request.auth.uid == userId;
+
+      // Allow only the user to write to the comments subcollection
+      match /comments/{commentId} {
+        allow write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Allow only the user to write to the likes subcollection
+      match /likes/{likeId} {
+        allow write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Allow only the user with 'writer' role to write to the articles subcollection
+      match /articles/{articleId} {
+        allow write: if request.auth != null && request.auth.uid == userId
+                      && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'writer';
+        allow delete: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // Allow querying articles, likes and comments
+    match /{path=**}/articles/{comment} {
+      allow read: if true;
+    }
+    match /{path=**}/likes/{comment} {
+      allow read: if true;
+    }
+    match /{path=**}/comments/{comment} {
+      allow read: if true;
+    }
+  }
+}

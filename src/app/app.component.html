@@ -1,0 +1,23 @@
+<ion-app>
+  <ng-container *ngIf="networkStatus; else offlineTemplate">
+    <ng-container *ngIf="(loading$ | async) === false; else loading">
+      <ion-router-outlet></ion-router-outlet>
+    </ng-container>
+
+    <ng-template #loading>
+      <div class="loader-container">
+        <ion-spinner name="crescent"></ion-spinner>
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #offlineTemplate>
+    <div class="offline-container">
+      <ion-icon color="primary" name="cloud-offline"></ion-icon>
+      <ion-text color="primary" class="sign-in__title">
+        <h1>You are Offline</h1>
+      </ion-text>
+      <p>Check your internet connection to continue.</p>
+    </div>
+  </ng-template>
+</ion-app>

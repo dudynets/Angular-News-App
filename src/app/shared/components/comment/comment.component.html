@@ -1,0 +1,38 @@
+<div class="comment">
+  <ion-item>
+    <ion-avatar *ngIf="user?.photoURL" slot="start">
+      <img [src]="user?.photoURL" />
+    </ion-avatar>
+    <div class="comment__body">
+      <ion-label class="comment__body-header">
+        <h2>{{ user?.displayName }}</h2>
+        <p>|</p>
+        <p>{{ comment.createdAt | date : 'dd/MM/yyyy hh:mm' }}</p>
+
+        <ng-container *ngIf="showArticleLink">
+          <p>|</p>
+          <p>
+            in
+            <a [routerLink]="['/article', article?.id]">
+              {{ article?.title }}
+            </a>
+          </p>
+        </ng-container>
+      </ion-label>
+
+      <ion-text class="comment__body-content">
+        <p>{{ comment.content }}</p>
+      </ion-text>
+    </div>
+
+    <ng-container *ngIf="user$ | async as user">
+      <ng-container *ngIf="isUsersComment(user)">
+        <ion-buttons slot="end">
+          <ion-button (click)="_deleteComment()">
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ng-container>
+    </ng-container>
+  </ion-item>
+</div>

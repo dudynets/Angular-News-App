@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Categories</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Categories</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="categories-content ion-margin-top ion-padding">
+    <ng-container *ngFor="let category of categories">
+      <app-category-card
+        (click)="navigateToCategory(category.slug)"
+        [category]="category"
+      ></app-category-card>
+    </ng-container>
+  </div>
+</ion-content>
