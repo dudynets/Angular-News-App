@@ -1,0 +1,26 @@
+<div class="articles-grid">
+  <ion-searchbar
+    *ngIf="articles?.length"
+    animated="true"
+    placeholder="Search for articles"
+    (ionInput)="onSearch($event)"
+  ></ion-searchbar>
+
+  <div class="articles-grid__container">
+    <ng-container *ngFor="let article of filteredArticles">
+      <app-article-preview
+        [article]="article"
+        [showActions]="showActions"
+      ></app-article-preview>
+    </ng-container>
+
+    <div
+      class="articles-grid__container-empty"
+      *ngIf="filteredArticles?.length === 0"
+    >
+      <p>
+        {{ isSearching ? 'No articles found.' : 'There are no articles yet.' }}
+      </p>
+    </div>
+  </div>
+</div>

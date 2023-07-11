@@ -1,0 +1,17 @@
+.editor-content {
+  &__section-title {
+    padding-inline: 1rem;
+
+    h3 {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+  }
+
+  &__item--content {
+    quill-editor {
+      width: 100%;
+    }
+  }
+}

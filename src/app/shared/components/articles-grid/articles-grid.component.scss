@@ -1,0 +1,22 @@
+.articles-grid {
+  ion-searchbar {
+    padding: 0 0 1rem 0;
+  }
+
+  &__container {
+    display: grid;
+    gap: 1rem;
+
+    @media (min-width: 600px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 900px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (min-width: 1200px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}

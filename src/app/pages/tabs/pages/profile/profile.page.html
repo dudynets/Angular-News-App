@@ -1,0 +1,27 @@
+<ng-container *ngIf="user$ | async">
+  <ion-header [translucent]="true">
+    <ion-toolbar>
+      <ion-title>My Profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</ng-container>
+
+<ion-content [fullscreen]="true" [forceOverscroll]="user$ | async">
+  <ng-container *ngIf="user$ | async">
+    <ion-header collapse="condense">
+      <ion-toolbar>
+        <ion-title size="large">My Profile</ion-title>
+      </ion-toolbar>
+    </ion-header>
+  </ng-container>
+
+  <div class="profile-content ion-padding">
+    <ng-container *ngIf="user$ | async as user; else signInTemplate">
+      <app-profile-info [user]="user"></app-profile-info>
+    </ng-container>
+
+    <ng-template #signInTemplate>
+      <app-sign-in></app-sign-in>
+    </ng-template>
+  </div>
+</ion-content>

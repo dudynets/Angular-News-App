@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Feed</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content> </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Feed</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="feed-content ion-margin-top ion-padding">
+    <ng-container *ngIf="!initialLoading; else loading">
+      <app-articles-grid [articles]="articles" [showActions]="false">
+      </app-articles-grid>
+    </ng-container>
+  </div>
+</ion-content>
+
+<ng-template #loading>
+  <div class="loader-container">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+</ng-template>

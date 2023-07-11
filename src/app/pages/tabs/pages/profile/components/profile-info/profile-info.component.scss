@@ -1,0 +1,67 @@
+:host {
+  width: 100%;
+}
+
+.profile-info {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__details {
+    display: flex;
+    gap: 16px;
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      &-name h3,
+      &-email {
+        margin: 0;
+      }
+    }
+  }
+
+  &__new-article {
+    &-title h3 {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+  }
+
+  &__activity {
+    &-title h3 {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    &-content {
+      margin-left: calc(var(--ion-padding, 16px) * -1);
+      width: 100vw;
+    }
+  }
+
+  &__danger-zone {
+    display: flex;
+    flex-direction: column;
+
+    &-title h3 {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    &-actions {
+      display: flex;
+      gap: 1rem;
+
+      ion-button {
+        flex: 1;
+      }
+    }
+  }
+}
